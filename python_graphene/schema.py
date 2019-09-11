@@ -120,3 +120,24 @@ print(json.dumps(result_json, indent=4))
 print(json.dumps(res_mutate.data, indent=4))
 print('\n------------------------------------------')
 print(json.dumps(result_users.data, indent=4))
+
+# -----------------------------------------------------------
+# passing dynamic values to our queries and mutations
+res_mutate = schema.execute(
+    '''
+    mutation ($username: String!) {
+        createUser(username: $username) {
+            user {
+                id
+                username
+                createdAt
+            }
+        }
+    }
+    ''',
+    variable_values = {
+        'username': 'Dave'
+    }
+)
+
+print(json.dumps(res_mutate.data, indent=4))
