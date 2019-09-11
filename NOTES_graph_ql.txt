@@ -1,0 +1,134 @@
+Online GraphQL IDE Interactive development: https://graphql.org/swapi-graphql/?
+or directly to website: https://swapi.co/
+
+What is GraphQL?
+GraphQL is a query language, and it allows us to get the data exactly we want,
+It gives us as developer more control over how we use data in our apps.
+
+Q: We want to get title of all the starwars films, the url above is specific to starwars films.
+API source: https://swapi.co/api/films/
+query:
+{
+  allFilms {
+    films {
+      title
+    }
+  }
+}
+
+output:
+{
+  "data": {
+    "allFilms": {
+      "films": [
+        {
+          "title": "A New Hope"
+        },
+        {
+          "title": "The Empire Strikes Back"
+        },
+        {
+          "title": "Return of the Jedi"
+        },
+        {
+          "title": "The Phantom Menace"
+        },
+        {
+          "title": "Attack of the Clones"
+        },
+        {
+          "title": "Revenge of the Sith"
+        },
+        {
+          "title": "The Force Awakens"
+        }
+      ]
+    }
+  }
+}
+
+GraphQL is what's known as strongly typed when a query or graphQL operation is executed,
+The data returned is validated against a type system. Each data field that we tell GraphQL
+about...
+Eg: all films query as well as its subfield has a specific type against which it's going to be validated.
+if type of the data doesn't corresponds to schema, we're going to get error.
+
+for every graphql application we are going to have one graphQL type, that all your individual queries are going to be defined.
+so when you click on root you'll see the entire schema.
+
+there are five built in scalar types integer denoted with (int, float, strings, boolean, id)
+
+Just like the data returned the arguments must be defined within our type system and the values passed to those arguments,
+must corresponds with the data types that we have declared within our schema.
+eg: for film we have schema as:
+film(id: ID, filmID: ID): Film
+for query we'll write as:
+{
+  film(filmID: "1") {
+    title
+    episodeID
+  }
+}
+
+output:
+{
+  "data": {
+    "film": {
+      "title": "A New Hope",
+      "episodeID": 4
+    }
+  }
+}
+
+to change the data, we use mutations
+the main difference is that they have to be prepared with the keyword mutation, eg mutation {}
+
+mutation {
+  createBaby(babyInfo: {
+    name: "fred",
+    votes: 1
+  }) {
+    name
+    votes
+  }
+}
+
+eg: to votes up the above data...
+mutation {
+  upVote(name: "fred") {
+    name
+    votes
+  }
+}
+
+eg: remove mutation
+mutation {
+  remove (name: "Fred") {
+    name
+    votes
+  }
+}
+
+the mutation that we've seen above is not dynamic in nature
+now we'll see how to pass dynamic data in mutations.
+
+eg: for create baby mutation
+mutation ($name: String!, $votes: Int!) {
+  createBaby(babyInfo: {
+    name: $name,
+    votes: $votes
+  }) {
+    //return values
+    name
+    votes
+  }
+}
+
+in order to access to run the above dynamic mutation,
+we need to go to Query Variable panel...
+in query variable panel write:
+{
+  "name": "James",
+  "votes": 0
+}
+
